@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
-import { authenticateUser } from '../../../lib/auth'
+import { authenticateUser, authenticateUserFromPages } from '../../../lib/auth'
 import { z } from 'zod'
 
 
@@ -55,7 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const user = await authenticateUser(req as any)
+    const user = await authenticateUserFromPages(req as any)
     const { id } = req.query
     
     if (user.type !== 'PROVIDER') {

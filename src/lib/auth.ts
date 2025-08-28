@@ -60,8 +60,8 @@ export async function authenticateUserFromPages(req: NextApiRequest) {
   }
 }
 
-export async function requireAdmin(request: NextRequest) {
-  const user = await authenticateUser(request)
+export async function requireAdmin(req: NextRequest) {
+  const user = await authenticateUserFromPages(req as any)
   if (!user.isAdmin) {
     throw new Error('Admin access required')
   }

@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { authenticateUser } from '../../../lib/auth'
 import { prisma } from '../../../lib/prisma'
+import { serviceSchema } from '../../../lib/validation'
+import { requireAdmin } from '../../../lib/auth'
+
 
 
 
@@ -57,32 +59,46 @@ import { prisma } from '../../../lib/prisma'
 
 
 
-
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' })
+  switch (req.method) {
+    case 'GET':
+      return getServices(res)
+    case 'POST':
+      return createService(req, res)
+    default:
+      return res.status(405).json({ error: 'Method not allowed' })
   }
+}
 
+async function getServices(res: NextApiResponse) {
   try {
-    const authUser = await authenticateUser(req as any)
+    const services = await prisma.service.findMany({
+      orderBy: { name: 'asc' }
+    })
+    res.json({ services })
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch services' })
+  }
+}
+
+async function createService(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    // await requireAdmin(req as any)
     
-    const user = await prisma.user.findUnique({
-      where: { id: authUser.id },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        phone: true,
-        type: true,
-        createdAt: true,
-        updatedAt: true
-      }
+    const validatedData = serviceSchema.parse(req.body)
+    
+    const service = await prisma.service.create({
+      data: validatedData
     })
 
-    res.json({ user })
+    res.status(201).json({
+      message: 'Service created successfully',
+      service
+    })
   } catch (error: any) {
-    res.status(401).json({ error: error.message })
+    if (error.message === 'Admin access required') {
+      return res.status(403).json({ error: error.message })
+    }
+    res.status(400).json({ error: error.message || 'Service creation failed' })
   }
 }

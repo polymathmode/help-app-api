@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
 import { bookingSchema } from '../../../lib/validation'
-import { authenticateUser } from '../../../lib/auth'
+import { authenticateUser, authenticateUserFromPages } from '../../../lib/auth'
 
 
 
@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function getUserBookings(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const user = await authenticateUser(req as any)
+    const user = await authenticateUserFromPages(req as any)
     
     const bookings = await prisma.booking.findMany({
       where: user.type === 'CLIENT' 
@@ -92,7 +92,7 @@ async function getUserBookings(req: NextApiRequest, res: NextApiResponse) {
 
 async function createBooking(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const user = await authenticateUser(req as any)
+    const user = await authenticateUserFromPages(req as any)
     
     if (user.type !== 'CLIENT') {
       return res.status(403).json({ error: 'Only clients can create bookings' })
