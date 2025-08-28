@@ -9,8 +9,8 @@
     "lint": "eslint",
     "db:migrate": "prisma migrate deploy",
     "db:generate": "prisma generate",
-    "db:seed": "tsx src/scripts/seed.ts"
-  },
+    "db:seed": "tsx src/scripts/seed.ts",
+    "postinstall":"prisma generate"  },
   "dependencies": {
     "@prisma/client": "^6.15.0",
     "@types/bcryptjs": "^2.4.6",

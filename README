@@ -24,4 +24,5 @@ A comprehensive backend API for connecting clients with service providers for on
 1. **Clone the repository**
    ```bash
    git clone https://github.com/polymathmode/help-app-api.git
+   hosted app:https://help-app-backend-efacm2pov-nduulenu-5179s-projects.vercel.app/
    cd help-app-backend
