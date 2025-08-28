@@ -1,0 +1,27 @@
+# Help App Backend API
+
+A comprehensive backend API for connecting clients with service providers for on-demand tasks.
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 14 with API Routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: JWT (JSON Web Tokens)
+- **Validation**: Zod
+- **Documentation**: Swagger/OpenAPI
+- **Deployment**: Vercel
+- **Language**: TypeScript
+
+## 🚀 Setup and Installation
+
+### Prerequisites
+- Node.js 18+
+- PostgreSQL database
+- Git
+
+### Local Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/polymathmode/help-app-api.git
+   cd help-app-backend
